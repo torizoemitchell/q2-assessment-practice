@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('galvanize-message:server');
+var debug = require('debug')('g103-galvanize-message:server');
 var http = require('http');
 
 /**
