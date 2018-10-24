@@ -8,19 +8,34 @@ router.get('/', (req, res, next) => {
   //res.send('ALL RECORDS')
   knex('messages')
     .then((rows) => {
-      res.json(rows)
+      let data = []
+      rows.forEach((obj) => {
+        let newObj = {
+          id: obj.id,
+          name: obj.name,
+          message: obj.message
+        }
+        data.push(newObj)
+      })
+      res.json(data)
     })
     .catch((err) => {
       next(err)
     })
 })
+
 // READ ONE record for this table
 router.get('/:id', (req, res, next) => {
   //res.send('ONE RECORD')
   knex('messages')
     .where('id', req.params.id)
     .then((rows) => {
-      res.json(rows)
+      let data = {
+        id: rows[0].id,
+        name: rows[0].name,
+        message: rows[0].message
+      }
+      res.json(data)
     })
     .catch((err) => {
       next(err)
@@ -37,7 +52,12 @@ router.post('/', (req, res, next) => {
     })
     .returning('*')
     .then((data) => {
-      res.json(data[0])
+      let retData = {
+        id: data[0].id,
+        name: data[0].name,
+        message: data[0].message
+      }
+      res.json(retData)
     })
     .catch((err) => {
       next(err)
@@ -45,7 +65,7 @@ router.post('/', (req, res, next) => {
 })
 
 // UPDATE ONE record for this table
-router.put('/:id', (req, res, next) => {
+router.patch('/:id', (req, res, next) => {
   //res.send('UPDATED RECORD')
   knex('messages')
     .where('id', req.params.id)
@@ -59,7 +79,12 @@ router.put('/:id', (req, res, next) => {
         })
         .returning('*')
         .then((data) => {
-          res.json(data[0])
+          let retData = {
+            id: data[0].id,
+            name: data[0].name,
+            message: data[0].message
+          }
+          res.json(retData)
         })
     })
     .catch((err) => {
@@ -78,8 +103,14 @@ router.delete('/:id', (req, res, next) => {
       knex('messages')
         .del()
         .where('id', req.params.id)
-        .then(() => {
-          res.send(`ID ${req.params.id} Deleted`)
+        .returning('*')
+        .then((results) => {
+          let data = {
+            id: results[0].id,
+            name: results[0].name,
+            message: results[0].message
+          }
+          res.json(data)
         })
     })
     .catch((err) => {
