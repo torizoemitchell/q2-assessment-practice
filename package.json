@@ -10,6 +10,7 @@
     "nodemon": "nodemon <file_to_start_app>"
   },
   "dependencies": {
+    "knex": "^0.15.2",
     "chai": "^4.2.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
